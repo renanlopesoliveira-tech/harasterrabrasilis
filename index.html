@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Haras Terra Brasilis · Catálogo de Cavalos</title>
+<meta name="description" content="Catálogo de cavalos Brasileiro de Hipismo do Haras Terra Brasilis. Ficha completa, vídeo em pista e árvore genealógica de cada cavalo.">
+<meta name="theme-color" content="#0a1410">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23fff' stroke='%23ae1b21' stroke-width='6'/%3E%3Cpath d='M14 40c6-14 18-22 34-20-6 3-9 8-9 14-6-4-15-3-25 6z' fill='%23047235'/%3E%3C/svg%3E">
+
+<!-- DEPLOY STEP: troque https://SEU-DOMINIO/ pelo endereço real do site -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Haras Terra Brasilis · Catálogo de Cavalos">
+<meta property="og:description" content="Brasileiro de Hipismo com genética de pista. Ficha, vídeo e genealogia de cada cavalo.">
+<meta property="og:url" content="https://SEU-DOMINIO/">
+<meta property="og:image" content="https://SEU-DOMINIO/assets/img/hero-poster.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Pular para o conteúdo</a>
+
+<div class="ambient" aria-hidden="true"><span class="glow g1"></span><span class="glow g2"></span><span class="grain"></span></div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#topo" aria-label="Haras Terra Brasilis, início">
+    <img src="assets/img/emblema.png" alt="" width="40" height="40">
+    <span class="brand-word"><b>Haras</b> Terra Brasilis</span>
+  </a>
+  <nav aria-label="Principal">
+    <ul class="nav-links">
+      <li><a href="#catalogo">Catálogo</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </nav>
+  <a class="btn btn-red btn-sm nav-cta" href="#contato">Fale com o Haras</a>
+</header>
+
+<!-- ===================== HERO =====================
+     O vídeo toca uma vez sozinho e para na pose final do cavalo.
+     Celular e tablet em pé recebem a versão vertical. -->
+<section class="hero" id="topo" aria-label="Apresentação">
+  <div class="stage">
+    <div class="poster" aria-hidden="true"></div>
+    <video class="hero-video" muted playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
+    <div class="scrim" aria-hidden="true"></div>
+    <div class="scrim-side" aria-hidden="true"></div>
+
+    <div class="band settle">
+      <p class="kicker mono">Mairiporã, SP</p>
+      <h1 class="hero-title hero-name" data-split="rise">Haras Terra <em>Brasilis</em></h1>
+      <p class="hero-sub">Conheça os nossos cavalos. Ficha completa, vídeo em pista e árvore genealógica de cada um.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-red" href="#catalogo">Ver o catálogo</a>
+        <a class="btn btn-ghost" href="#contato">Falar com o Haras</a>
+      </div>
+    </div>
+
+    <a class="cue" href="#catalogo" aria-label="Rolar para o catálogo"><span></span></a>
+  </div>
+</section>
+
+<main id="main" tabindex="-1">
+
+
+  <!-- ===================== CATÁLOGO ===================== -->
+  <section class="catalogo" id="catalogo">
+    <div class="rail-divider reveal" aria-hidden="true"><span class="post"></span><span class="pole"></span><span class="post"></span></div>
+    <div class="wrap">
+      <div class="cat-head reveal">
+        <div>
+          <p class="kicker mono">Catálogo</p>
+          <h2 class="h2">Escolha o seu próximo parceiro de pista.</h2>
+        </div>
+        <p class="cat-count mono" aria-live="polite"><span id="count">0</span> cavalos</p>
+      </div>
+
+      <div class="cat-tools reveal">
+        <div class="chips" role="group" aria-label="Filtrar cavalos">
+          <button class="chip-btn is-on" type="button" data-filter="todos" aria-pressed="true">Todos</button>
+          <button class="chip-btn" type="button" data-filter="Macho" aria-pressed="false">Machos</button>
+          <button class="chip-btn" type="button" data-filter="Fêmea" aria-pressed="false">Fêmeas</button>
+          <button class="chip-btn" type="button" data-filter="disponivel" aria-pressed="false">Disponíveis</button>
+        </div>
+        <label class="search">
+          <span class="sr-only">Buscar cavalo</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input type="search" id="busca" placeholder="Buscar por nome, pai ou mãe" autocomplete="off">
+        </label>
+      </div>
+
+      <ul class="grid" id="grid"></ul>
+      <p class="empty" id="empty" hidden>Nenhum cavalo com esse filtro. <button type="button" class="link-btn" id="limpar">Mostrar todos</button></p>
+    </div>
+  </section>
+
+
+
+
+  <!-- ===================== CONTATO ===================== -->
+  <section class="contato" id="contato">
+    <div class="wrap contato-grid">
+      <div class="contato-copy reveal">
+        <p class="kicker mono">Contato</p>
+        <h2 class="h2">Gostou de algum cavalo?</h2>
+        <p class="lede">Mande uma mensagem. A gente responde com mais vídeos, fotos e o histórico completo.</p>
+        <ul class="contato-list" id="contato-list"></ul>
+      </div>
+      <form class="form reveal" id="form" novalidate>
+        <label class="field"><span>Seu nome</span>
+          <input name="nome" required autocomplete="name" placeholder="Como podemos te chamar?">
+        </label>
+        <label class="field"><span>Cavalo de interesse</span>
+          <select name="cavalo" id="form-cavalo"></select>
+        </label>
+        <label class="field"><span>Mensagem</span>
+          <textarea name="msg" rows="4" placeholder="Conte o que você procura: nível, idade, objetivo."></textarea>
+        </label>
+        <button class="btn btn-red btn-block" type="submit">Enviar mensagem</button>
+        <p class="form-note" id="form-note" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="rail-divider reveal" aria-hidden="true"><span class="post"></span><span class="pole"></span><span class="post"></span></div>
+  <div class="wrap footer-grid">
+    <img class="footer-logo" src="assets/img/logo.png" alt="Haras Terra Brasilis" width="120" height="170" loading="lazy">
+    <div>
+      <p class="footer-line">Brasileiro de Hipismo criado com genética de pista.</p>
+      <p class="footer-small mono">Rua Doná Maria Nunes, 300 · Mairiporã, SP · 11 4482 2271</p>
+      <p class="footer-small mono">Registros oficiais na <a href="https://abcch.com.br" target="_blank" rel="noopener">ABCCH</a> · Fotos: CLAC</p>
+      <p class="footer-small mono">© <span id="ano">2026</span> Haras Terra Brasilis</p>
+    </div>
+    <a class="btn btn-ghost" href="#topo">Voltar ao topo</a>
+  </div>
+</footer>
+
+<!-- ===================== FICHA DO CAVALO ===================== -->
+<dialog class="modal ficha" id="ficha" aria-labelledby="ficha-nome">
+  <button class="close close-fixed" type="button" data-close aria-label="Fechar a ficha"><span></span></button>
+  <div class="modal-inner" id="ficha-body"></div>
+</dialog>
+
+<!-- ===================== ÁRVORE GENEALÓGICA ===================== -->
+<dialog class="modal tree-modal" id="arvore" aria-labelledby="arvore-titulo">
+  <div class="modal-inner">
+    <header class="tree-head">
+      <div>
+        <p class="kicker mono">Árvore genealógica</p>
+        <h2 class="h3" id="arvore-titulo">Cavalo</h2>
+      </div>
+      <button class="close" type="button" data-close aria-label="Fechar a árvore genealógica"><span></span></button>
+    </header>
+    <div class="tree-legend mono">
+      <span><i class="dot m"></i>Machos</span>
+      <span><i class="dot f"></i>Fêmeas</span>
+      <span class="tree-hint">Toque num nome para acender o caminho do sangue até o cavalo.</span>
+    </div>
+    <p class="tree-swipe">Arraste para o lado para ver todas as gerações →</p>
+    <div class="tree-scroll">
+      <div class="tree" id="tree">
+        <svg class="tree-lines" id="tree-lines" aria-hidden="true"></svg>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script src="assets/cavalos.js"></script>
+<script src="assets/main.js"></script>
+</body>
+</html>
