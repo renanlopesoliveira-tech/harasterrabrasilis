@@ -110,27 +110,33 @@
     try { video.pause(); } catch (e) {}
   }
   const economia = navigator.connection && navigator.connection.saveData;
-  // toca só uma vez por visita: voltar para a página, recarregar ou voltar de outro link mostra a pose final
-  let jaViu = false;
-  try { jaViu = sessionStorage.getItem('htb-video-visto') === '1'; } catch (e) {}
-  if (DATA.videoNoTopo !== false && !RM.matches && !economia && !jaViu) {
-    const v = HERO[PORTRAIT.matches ? 'retrato' : 'larga'];
-    poster.style.backgroundImage = `url('${v.inicio}')`;
-    video.poster = v.inicio;
-    video.src = v.video;
-    video.addEventListener('playing', () => stage.classList.add('video-ready'), { once: true });
-    video.addEventListener('error', heroStill, { once: true });
-    // terminou: troca o vídeo pela imagem da pose final, que nunca reinicia
-    video.addEventListener('ended', () => {
-      try { sessionStorage.setItem('htb-video-visto', '1'); } catch (e) {}
-      heroStill();
-    }, { once: true });
+  const podeTocar = () => DATA.videoNoTopo !== false && !RM.matches && !economia;
+  let versao = null, primeira = true;
+  // toca do começo e para na pose final; roda ao abrir e toda vez que a pessoa volta ao topo
+  function heroPlay() {
+    if (!podeTocar()) return heroStill();
+    const nome = PORTRAIT.matches ? 'retrato' : 'larga';
+    const v = HERO[nome];
+    if (primeira) { poster.style.backgroundImage = `url('${v.inicio}')`; primeira = false; }
+    if (versao !== nome) { versao = nome; video.poster = v.inicio; video.src = v.video; }
+    else { try { video.currentTime = 0; } catch (e) {} }
+    stage.classList.remove('video-off');
     const tocar = video.play();
     if (tocar && tocar.catch) tocar.catch(heroStill);      // navegador bloqueou: fica a pose final
-    PORTRAIT.addEventListener('change', heroStill, { once: true });  // girou o aparelho: pose final da outra versão
-  } else {
-    heroStill();
   }
+  video.addEventListener('playing', () => stage.classList.add('video-ready'));
+  video.addEventListener('ended', heroStill);            // terminou: fica a imagem da pose final
+  video.addEventListener('error', heroStill);
+  PORTRAIT.addEventListener('change', heroStill);        // girou o aparelho: pose final da outra versão
+
+  // saiu do topo e voltou: toca de novo
+  let saiuDoTopo = false;
+  new IntersectionObserver(([e]) => {
+    if (e.intersectionRatio < 0.15) { saiuDoTopo = true; return; }
+    if (saiuDoTopo && e.intersectionRatio >= 0.6) { saiuDoTopo = false; heroPlay(); }
+  }, { threshold: [0, 0.15, 0.6] }).observe($('.hero'));
+
+  heroPlay();
   RM.addEventListener('change', e => { if (e.matches) heroStill(); });
 
   /* entrada do título ao abrir a página */
