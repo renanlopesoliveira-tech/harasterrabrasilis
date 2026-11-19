@@ -6,6 +6,15 @@
   const DATA = window.HARAS || { contato: {}, cavalos: [] };
   const CAVALOS = DATA.cavalos || [];
   const CONTATO = DATA.contato || {};
+  // tira siglas entre parênteses depois do nome, como "(IA)"
+  const limpa = s => String(s || '').replace(/\s*\([^)]*\)/g, '').trim();
+  CAVALOS.forEach(c => {
+    c.nome = limpa(c.nome);
+    const g = c.genealogia;
+    if (!g) return;
+    g.pai = limpa(g.pai); g.mae = limpa(g.mae);
+    ['avos', 'bisavos', 'trisavos'].forEach(k => { if (g[k]) g[k] = g[k].map(limpa); });
+  });
   const BY_ID = Object.fromEntries(CAVALOS.map(c => [c.id, c]));
 
   const $ = (s, r = document) => r.querySelector(s);
@@ -101,13 +110,21 @@
     try { video.pause(); } catch (e) {}
   }
   const economia = navigator.connection && navigator.connection.saveData;
-  if (DATA.videoNoTopo !== false && !RM.matches && !economia) {
+  // toca só uma vez por visita: voltar para a página, recarregar ou voltar de outro link mostra a pose final
+  let jaViu = false;
+  try { jaViu = sessionStorage.getItem('htb-video-visto') === '1'; } catch (e) {}
+  if (DATA.videoNoTopo !== false && !RM.matches && !economia && !jaViu) {
     const v = HERO[PORTRAIT.matches ? 'retrato' : 'larga'];
     poster.style.backgroundImage = `url('${v.inicio}')`;
     video.poster = v.inicio;
     video.src = v.video;
     video.addEventListener('playing', () => stage.classList.add('video-ready'), { once: true });
     video.addEventListener('error', heroStill, { once: true });
+    // terminou: troca o vídeo pela imagem da pose final, que nunca reinicia
+    video.addEventListener('ended', () => {
+      try { sessionStorage.setItem('htb-video-visto', '1'); } catch (e) {}
+      heroStill();
+    }, { once: true });
     const tocar = video.play();
     if (tocar && tocar.catch) tocar.catch(heroStill);      // navegador bloqueou: fica a pose final
     PORTRAIT.addEventListener('change', heroStill, { once: true });  // girou o aparelho: pose final da outra versão
@@ -308,12 +325,6 @@
     const g = c.genealogia || {};
     const disp = c.disponivel !== false;
     const wa = waLink(interesseTexto(c));
-    const rows = [
-      ['Registro', c.registro], ['Status', c.status], ['UELN', c.ueln], ['Microchip', c.microchip],
-      ['Nascimento', dataBR(c.nascimento)], ['Idade', idade(c)], ['Sexo', c.sexo], ['Pelagem', c.pelagem],
-      ['Raça', c.raca], ['Método reprodutivo', c.metodo], ['DNA', c.dna], ['Criador', c.criador],
-      ['Proprietário', c.proprietario], ['Local de nascimento', c.localNascimento]
-    ].filter(r => r[1]);
     $('#ficha-body').innerHTML = `
       <div class="ficha-grid">
         <div class="ficha-media">
@@ -327,7 +338,7 @@
           </div>
           <h2 class="ficha-name" id="ficha-nome">${esc(c.nome)}</h2>
           ${g.pai ? `<p class="ficha-cross">${esc(titleCase(g.pai))}<span aria-label="cruzado com">×</span>${esc(titleCase(g.mae))}</p>` : ''}
-          ${c.resumo ? `<p class="ficha-resumo">${esc(c.resumo)}</p>` : ''}
+          ${c.nascimento ? `<p class="ficha-nasc"><span class="mono">Nascimento</span>${esc(dataBR(c.nascimento))}</p>` : ''}
           <div class="ficha-actions">
             ${c.youtube ? `<button class="btn btn-green" type="button" data-ver-video>${ICON.play}Ver vídeo</button>` : ''}
             ${g.pai ? `<a class="btn ${c.youtube ? 'btn-ghost' : 'btn-green'}" href="#arvore/${esc(c.id)}">${ICON.tree}Árvore genealógica</a>` : ''}
@@ -335,7 +346,6 @@
                  : `<button class="btn btn-red" type="button" data-interesse="${esc(c.id)}">Tenho interesse</button>`}
             ${c.abcch ? `<a class="btn btn-ghost" href="${esc(c.abcch)}" target="_blank" rel="noopener">Ficha na ABCCH ${ICON.out}</a>` : ''}
           </div>
-          <dl class="spec">${rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd${/UELN|Microchip|Registro|DNA/.test(k) ? ' class="mono"' : ''}>${esc(v)}</dd></div>`).join('')}</dl>
         </div>
       </div>
       ${c.youtube ? `<div class="ficha-video" id="ficha-video"><h3>Vídeo em pista</h3>${ytBlock(c.youtube, nomeCurto(c) + ' em pista', c.foto)}</div>` : ''}`;
@@ -463,7 +473,10 @@
   const items = [];
   const waN = String(CONTATO.whatsapp || '').replace(/\D/g, '');
   if (waN) items.push(`<li><a href="https://wa.me/${waN}" target="_blank" rel="noopener">${ICON.wa}WhatsApp</a></li>`);
-  if (CONTATO.telefone) items.push(`<li><a href="tel:+55${esc(String(CONTATO.telefone).replace(/\D/g, ''))}">${ICON.tel}${esc(CONTATO.telefone)}</a></li>`);
+  if (CONTATO.telefone) {
+    const tel = String(CONTATO.telefone).replace(/\D/g, '');
+    items.push(`<li><a href="tel:+${tel.length > 11 ? tel : '55' + tel}">${ICON.tel}${esc(CONTATO.telefone)}</a></li>`);
+  }
   if (CONTATO.instagram) items.push(`<li><a href="https://instagram.com/${esc(CONTATO.instagram)}" target="_blank" rel="noopener">${ICON.ig}@${esc(CONTATO.instagram)}</a></li>`);
   if (CONTATO.email) items.push(`<li><a href="mailto:${esc(CONTATO.email)}">${ICON.mail}${esc(CONTATO.email)}</a></li>`);
   if (CONTATO.cidade) items.push(`<li><a href="${esc(CONTATO.mapa || 'https://www.google.com/maps/search/' + encodeURIComponent('Haras Terra Brasilis ' + CONTATO.cidade))}" target="_blank" rel="noopener">${ICON.pin}${esc([CONTATO.endereco, CONTATO.cidade].filter(Boolean).join(' · '))}</a></li>`);

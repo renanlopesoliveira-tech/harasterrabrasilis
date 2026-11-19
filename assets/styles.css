@@ -290,6 +290,8 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 .ficha-name{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(44px,5vw,72px);line-height:.9}
 .ficha-cross{margin-top:14px;font-size:17px}
 .ficha-cross span{color:var(--red-soft);margin:0 .4em}
+.ficha-nasc{display:flex;align-items:baseline;gap:12px;margin-top:16px;font-size:18px;font-weight:600}
+.ficha-nasc .mono{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.14em;color:var(--text-3)}
 .ficha-resumo{color:var(--text-2);margin-top:14px;max-width:48ch}
 .ficha .spec{margin-top:24px}
 .ficha-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
@@ -355,3 +357,4 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 /* celular baixo: vídeo um pouco menor para a legenda caber */
 @media (orientation:portrait) and (max-height:700px){.stage{--media-h:min(50svh,128vw)}.hero-title{font-size:clamp(46px,13vw,76px)}.hero-sub{font-size:15px}.hero-ctas{margin-top:16px}}
 @media (orientation:portrait) and (max-width:360px){.hero-ctas{gap:8px}.hero-ctas .btn{font-size:13.5px;padding:0 6px;letter-spacing:0}}
+@media (max-width:900px){.ficha-actions .btn{flex:1 1 calc(50% - 5px);min-width:0;padding:0 10px;font-size:14.5px;gap:.4em}.ficha-actions .btn svg{width:16px;height:16px}}

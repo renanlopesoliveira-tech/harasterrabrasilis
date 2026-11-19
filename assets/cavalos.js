@@ -11,9 +11,9 @@ window.HARAS = {
   /* Contato do haras. Preencha e o site inteiro passa a usar. */
   contato: {
     whatsapp: '',          // DDI + DDD + número, só dígitos. Ex.: '5511999999999'. Vazio = o formulário manda por e-mail
-    telefone: '11 4482 2271',
+    telefone: '+55 11 97283-8869',
     instagram: '',         // só o usuário, sem @
-    email: 'haras@harasterrabrasilis.com.br',
+    email: 'victor@harasterrabrasilis.com.br',
     endereco: 'Rua Doná Maria Nunes, 300',
     cidade: 'Mairiporã, SP',
     mapa: 'https://goo.gl/maps/W6NRyd5FHBDwTtxu8',
@@ -27,7 +27,7 @@ window.HARAS = {
 /* Base do Koda. As cópias abaixo usam os mesmos dados só para você ver
    o catálogo cheio. Troque cada uma pelo cavalo de verdade. */
 const KODA = {
-  nome: 'KODA TB (IA)',
+  nome: 'KODA TB',
   apelido: 'Koda',
   status: 'Vivo',
   disponivel: true,                   // false mostra o selo "Reservado"
@@ -51,7 +51,7 @@ const KODA = {
   resumo: 'Castanho de salto, filho de Etoulon VDL e neto de Toulon. Sangue de pista dos dois lados, criado e registrado no Haras Terra Brasilis.',
   genealogia: {
     pai: 'ETOULON VDL',
-    mae: 'BELLA DONNA TB (IA)',
+    mae: 'BELLA DONNA TB',
     // avós: pai do pai, mãe do pai, pai da mãe, mãe da mãe
     avos: ['TOULON', 'UTAREUSA', 'EMILION', 'LISETTE JMEN'],
     // bisavós, na mesma ordem (de cima para baixo da ficha da ABCCH)
